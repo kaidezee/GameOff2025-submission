@@ -1,0 +1,102 @@
+[gd_scene load_steps=11 format=3 uid="uid://yicge48108e0"]
+
+[ext_resource type="Script" uid="uid://3eoo2li2pyij" path="res://scripts/camera.gd" id="1_iywne"]
+[ext_resource type="Script" uid="uid://d4mywpr5tytwv" path="res://scripts/game.gd" id="1_p57ef"]
+[ext_resource type="Texture2D" uid="uid://cydmi41tt1ae1" path="res://assets/source.png" id="1_uwrxv"]
+[ext_resource type="Script" uid="uid://ci6kacelb5bu4" path="res://scripts/menu_element.gd" id="1_yqjtg"]
+[ext_resource type="Script" uid="uid://dajwi8y4wxw2j" path="res://scripts/logic.gd" id="2_u5sy4"]
+[ext_resource type="Texture2D" uid="uid://dw2kgh7acd8iy" path="res://assets/wire_icon.png" id="3_lnu2h"]
+[ext_resource type="Script" uid="uid://d0d4ktbhfm1n" path="res://scripts/grid.gd" id="4_lbhrr"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lbhrr"]
+bg_color = Color(0.11764706, 0.11764706, 0.11764706, 0.30588236)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lnu2h"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iywne"]
+bg_color = Color(0.18039216, 0.18039216, 0.18039216, 1)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_p57ef")
+
+[node name="Logic" type="Node2D" parent="."]
+script = ExtResource("2_u5sy4")
+
+[node name="GridCanvasLayer" type="CanvasLayer" parent="."]
+layer = -1
+follow_viewport_enabled = true
+
+[node name="Grid" type="Node2D" parent="GridCanvasLayer"]
+script = ExtResource("4_lbhrr")
+GRID_SIZE = Vector2(800, 800)
+
+[node name="Camera" type="Camera2D" parent="."]
+position = Vector2(960, 540)
+process_callback = 0
+position_smoothing_enabled = true
+position_smoothing_speed = 35.0
+script = ExtResource("1_iywne")
+
+[node name="UICanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Control" type="Control" parent="UICanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="UICanvasLayer/Control"]
+physics_interpolation_mode = 0
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 164.0
+offset_bottom = 1072.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lbhrr")
+
+[node name="BuildMenu" type="GridContainer" parent="UICanvasLayer/Control"]
+physics_interpolation_mode = 1
+layout_mode = 0
+offset_left = 12.0
+offset_top = 12.0
+offset_right = 160.0
+offset_bottom = 1068.0
+columns = 2
+
+[node name="Source" type="PanelContainer" parent="UICanvasLayer/Control/BuildMenu"]
+physics_interpolation_mode = 0
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_lnu2h")
+script = ExtResource("1_yqjtg")
+
+[node name="SourceButton" type="TextureButton" parent="UICanvasLayer/Control/BuildMenu/Source"]
+physics_interpolation_mode = 1
+layout_mode = 2
+texture_normal = ExtResource("1_uwrxv")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Wire" type="PanelContainer" parent="UICanvasLayer/Control/BuildMenu"]
+physics_interpolation_mode = 0
+custom_minimum_size = Vector2(72, 72)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_iywne")
+script = ExtResource("1_yqjtg")
+
+[node name="WireButton" type="TextureButton" parent="UICanvasLayer/Control/BuildMenu/Wire"]
+physics_interpolation_mode = 0
+layout_mode = 2
+texture_normal = ExtResource("3_lnu2h")
+ignore_texture_size = true
+stretch_mode = 0
+
+[connection signal="mouse_entered" from="UICanvasLayer/Control/BuildMenu/Source/SourceButton" to="UICanvasLayer/Control/BuildMenu/Source" method="_on_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="UICanvasLayer/Control/BuildMenu/Source/SourceButton" to="UICanvasLayer/Control/BuildMenu/Source" method="_on_texture_button_mouse_exited"]
+[connection signal="pressed" from="UICanvasLayer/Control/BuildMenu/Source/SourceButton" to="." method="_on_source_button_pressed"]
+[connection signal="mouse_entered" from="UICanvasLayer/Control/BuildMenu/Wire/WireButton" to="UICanvasLayer/Control/BuildMenu/Wire" method="_on_texture_button_mouse_entered"]
+[connection signal="mouse_exited" from="UICanvasLayer/Control/BuildMenu/Wire/WireButton" to="UICanvasLayer/Control/BuildMenu/Wire" method="_on_texture_button_mouse_exited"]
+[connection signal="pressed" from="UICanvasLayer/Control/BuildMenu/Wire/WireButton" to="." method="_on_wire_button_pressed"]
