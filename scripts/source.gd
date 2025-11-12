@@ -1,14 +1,16 @@
 extends Node2D
 
 func build() -> void:
-	var node := Node2D.new()
-	node.position = position + Vector2(sin(rotation + PI/2), -cos(rotation + PI/2)) * 50.0
+	var newNode = load("res://scenes/source.tscn").instantiate()
+	newNode.visible = false
 
-	var netNode := Constants.NetNode.new()
-	netNode.node = node
-	netNode.variant = Constants.NetNodeVariant.SOURCE
+	newNode.position = position + Vector2(sin(rotation + PI/2), -cos(rotation + PI/2)) * 50.0
 
-	var newNet = Constants.Net.new()
-	newNet.nodes.append(netNode)
+	var netNodes: Array[Constants.NetNode] = [Constants.NetNode.new()]
+	netNodes[0].node = newNode
+	netNodes[0].variant = Constants.NetNodeVariant.SOURCE
 
-	$"/root/Game/Logic".networks.append(newNet)
+	$"/root/Game/Logic".add_network_nodes(netNodes)
+
+func get_value(elapsed: float) -> float:
+	return sin(elapsed)

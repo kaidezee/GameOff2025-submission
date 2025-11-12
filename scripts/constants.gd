@@ -5,9 +5,15 @@ enum NetNodeVariant {
 	CONDUIT,
 }
 
+enum NetStatus {
+	OK,
+	ERROR,
+}
+
 class Net:
 	var nodes: Array[NetNode]
-	var status: String
+	var source: NetNode
+	var status: NetStatus
 	var value: float
 
 class NetNode:
